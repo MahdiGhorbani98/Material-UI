@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import {makeStyles , createTheme, ThemeProvider ,withStyles, createMuiTheme} from '@material-ui/core/styles';
-import { Avatar, CardActions, CardContent, CardHeader, Container, Typography } from '@material-ui/core';
+import { Avatar, CardActions, CardContent, CardHeader, Container, Grid, Typography } from '@material-ui/core';
 import {  blue  } from '@material-ui/core/colors';
 import Brightness4OutlinedIcon from '@material-ui/icons/Brightness4Outlined';
 import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
@@ -22,7 +22,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail'
-
+import Skeleton from '@material-ui/lab/Skeleton';
+import { Box } from '@material-ui/core';
 
 
 const useStyle = makeStyles((themeStyles)=> ({
@@ -45,15 +46,16 @@ const useStyle = makeStyles((themeStyles)=> ({
     },
     gridContainer :{
         marginTop:themeStyles.spacing(12),
-    }
+    },
+
 }))
 
 
 export default function Home(props) {
     const notes = props.notes;
+    const load = props.load;
     const [lightTheme,setLightTheme] = useState(true);
     const [anchor,setAnchore] = useState(false);
-
     const toggleDrawer = ( open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
           return;
@@ -100,6 +102,7 @@ export default function Home(props) {
     )
     return (
         <div>
+            {console.log(notes)}
             <ThemeProvider theme = {theme}>
             <CssBaseline />
                 <Drawer anchor={'left'} open={anchor} onClose={toggleDrawer(false)}>
@@ -131,40 +134,61 @@ export default function Home(props) {
                   breakpointCols={breakpointCols}
                   className="my-masonry-grid"
                   columnClassName="my-masonry-grid_column"
-                >
-                    {
-                        notes.map(note=> (
-                                <Card className={classes.root} key ={note.id}>
-                                    <CardHeader className={classes.cardHeader}
-                                    avatar ={
-                                        <Avatar style={{backgroundColor: '#'+Math.floor(Math.random()*16777215).toString(16) }} >
-                                            {note.title.charAt(0)}
-                                        </Avatar>
-                                    }
-                                    action={
-                                        <IconButton>
-                                            <MoreVert/>
-                                        </IconButton>
-                                    }
-                                    title={note.title} />
-                                    <Divider/>
-                                    <CardContent>
-                                        <Typography variant='body2' color='textSecondary'>
-                                            {note.details}
-                                        </Typography>
-                                    </CardContent> 
-                                    <CardActions>
-                                        <IconButton color='secondary' aria-label="add to favorites">
-                                            <Favorite />
-                                        </IconButton>
+                >   
+                {
+                notes.length>0? 
+                (notes.map(note=> (
+                        <Card className={classes.root} key ={note.id}>
+                            <CardHeader className={classes.cardHeader}
+                            avatar ={
+                                <Avatar style={{backgroundColor: '#'+Math.floor(Math.random()*16777215).toString(16) }} >
+                                    {note.title.charAt(0)}
+                                </Avatar>
+                            }
+                            action={
+                                <IconButton>
+                                    <MoreVert/>
+                                </IconButton>
+                            }
+                            title={note.title} />
+                            <Divider/>
+                            <CardContent>
+                                <Typography variant='body2' color='textSecondary'>
+                                    {note.details}
+                                </Typography>
+                            </CardContent> 
+                            <CardActions>
+                                <IconButton color='secondary' aria-label="add to favorites">
+                                    <Favorite />
+                                </IconButton>
 
-                                        <IconButton>
-                                            <Share/>
-                                        </IconButton>
-                                    </CardActions>
-                                </Card>
-                        ))
-                    }
+                                <IconButton>
+                                    <Share/>
+                                </IconButton>
+                            </CardActions>
+                        </Card>
+                )))
+                :(
+                    [1,2,3,4,5,6,7,8,9].map((item,index)=> 
+                        // <React.Fragment>
+                        //     <Skeleton variant="rect" width={310} height={118} />
+                        //     <Box pt={0.5}  width={310}>
+                        //         <Skeleton />
+                        //         <Skeleton width="60%" />
+                        //     </Box>
+                        // </React.Fragment>
+                        <React.Fragment key={index}>
+                            <Skeleton animation="wave" variant="circle" width={40} height={40} style={{ marginBottom: 8,marginLeft:6 }} />
+                            <Skeleton variant="rect" width={310} height={118} />
+                            <Box pt={0.5}  width={310}>
+                                <Skeleton />
+                                <Skeleton width="60%" />
+                            </Box>
+                        </React.Fragment>
+                     )
+                )
+                }
+
                 </Masonry>
             </Container>
 
