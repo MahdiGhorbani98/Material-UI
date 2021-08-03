@@ -48,6 +48,7 @@ const useStyle = makeStyles((themeStyles)=> ({
         marginTop:themeStyles.spacing(12),
     },
 
+
 }))
 
 
@@ -177,14 +178,14 @@ export default function Home(props) {
                         //         <Skeleton width="60%" />
                         //     </Box>
                         // </React.Fragment>
-                        <React.Fragment key={index}>
+                        <div className="skelton" key={index}>
                             <Skeleton animation="wave" variant="circle" width={40} height={40} style={{ marginBottom: 8,marginLeft:6 }} />
-                            <Skeleton variant="rect" width={310} height={118} />
-                            <Box pt={0.5}  width={310}>
+                            <Skeleton className="skeltonRect" variant="rect" width={280} height={118} />
+                            <Box pt={0.5}  width={280} className="skeltonRect">
                                 <Skeleton />
                                 <Skeleton width="60%" />
                             </Box>
-                        </React.Fragment>
+                        </div>
                      )
                 )
                 }
